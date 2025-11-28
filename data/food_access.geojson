@@ -1,0 +1,203 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Moisson Montréal",
+        "type": "food_bank",
+        "address": "6880 Chemin de la Côte-de-Liesse, Saint-Laurent",
+        "hours": "Mon-Fri 8am-4pm",
+        "website": "https://www.moissonmontreal.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.7142, 45.4983] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sun Youth Organization",
+        "type": "food_bank",
+        "address": "4251 Rue Saint-Urbain, Montréal",
+        "hours": "Mon-Fri 9am-4pm",
+        "website": "https://sunyouthorg.com/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.5883, 45.5192] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NDG Food Depot",
+        "type": "food_bank",
+        "address": "6505 Somerled Ave, Montréal",
+        "hours": "Tue-Thu 9am-4pm, Fri 9am-3pm",
+        "website": "https://www.depotndg.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.6392, 45.4633] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Community Fridge - Plateau",
+        "type": "community_fridge",
+        "address": "Avenue du Mont-Royal E., Montréal",
+        "hours": "24/7 (self-serve)",
+        "website": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.5761, 45.5254] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Community Fridge - Villeray",
+        "type": "community_fridge",
+        "address": "Rue Villeray, Montréal",
+        "hours": "24/7 (self-serve)",
+        "website": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.6123, 45.5512] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Community Fridge - Rosemont",
+        "type": "community_fridge",
+        "address": "Rue Masson, Montréal",
+        "hours": "24/7 (self-serve)",
+        "website": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.5812, 45.5487] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Santropol Roulant",
+        "type": "meal_delivery",
+        "address": "111 Rue Roy E, Montréal",
+        "hours": "Meals-on-wheels service",
+        "website": "https://santropolroulant.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.5742, 45.5173] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "MultiCaf",
+        "type": "community_kitchen",
+        "address": "3516 Avenue du Parc, Montréal",
+        "hours": "Mon-Fri 11:30am-1pm",
+        "website": "https://www.multicaf.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.5771, 45.5111] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Moisson Québec",
+        "type": "food_bank",
+        "address": "2550 Boulevard Père-Lelièvre, Québec",
+        "hours": "Mon-Fri 8am-4pm",
+        "website": "https://www.moissonquebec.com/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-71.2892, 46.8423] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "La Cantine pour tous",
+        "type": "community_kitchen",
+        "address": "Various locations, Québec City",
+        "hours": "Varies by location",
+        "website": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-71.2178, 46.8139] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Moisson Rive-Sud",
+        "type": "food_bank",
+        "address": "2550 Boulevard Marie-Victorin, Longueuil",
+        "hours": "Mon-Fri 8am-4pm",
+        "website": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.4912, 45.5143] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Moisson Laval",
+        "type": "food_bank",
+        "address": "3650 Boulevard Saint-Elzéar O, Laval",
+        "hours": "Mon-Fri 8am-4pm",
+        "website": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.7412, 45.5712] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Community Fridge - Hochelaga",
+        "type": "community_fridge",
+        "address": "Rue Ontario E, Montréal",
+        "hours": "24/7 (self-serve)",
+        "website": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.5412, 45.5443] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Welcome Hall Mission",
+        "type": "food_bank",
+        "address": "606 Rue de Courcelle, Montréal",
+        "hours": "Food bank Wed & Fri 1pm-4pm",
+        "website": "https://welcomehallmission.com/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.5923, 45.4832] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dans la rue",
+        "type": "youth_services",
+        "address": "1664 Rue Ontario E, Montréal",
+        "hours": "Daily services for homeless youth",
+        "website": "https://danslarue.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.5512, 45.5282] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Maison du Père",
+        "type": "shelter_meals",
+        "address": "550 Boul René-Lévesque E, Montréal",
+        "hours": "Meals served daily",
+        "website": "https://maisondupere.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.5612, 45.5142] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Garde-manger pour tous",
+        "type": "food_bank",
+        "address": "1625 Rue Fleury E, Montréal",
+        "hours": "Tue-Thu 9am-12pm, 1pm-4pm",
+        "website": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.6312, 45.5812] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Community Fridge - Saint-Michel",
+        "type": "community_fridge",
+        "address": "Boulevard Saint-Michel, Montréal",
+        "hours": "24/7 (self-serve)",
+        "website": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.5932, 45.5623] }
+    }
+  ]
+}

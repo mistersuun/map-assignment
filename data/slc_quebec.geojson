@@ -1,0 +1,135 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Montérégie Agricultural Zone",
+        "type": "agricultural_region",
+        "description": "Major agricultural region south of Montreal",
+        "area_ha": 450000,
+        "primary_crops": "Vegetables, corn, soybeans, dairy"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.5, 45.2],
+          [-72.8, 45.2],
+          [-72.8, 45.6],
+          [-73.5, 45.6],
+          [-73.5, 45.2]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Île d'Orléans Agricultural Zone",
+        "type": "agricultural_region",
+        "description": "Historic farming island near Quebec City",
+        "area_ha": 12000,
+        "primary_crops": "Strawberries, apples, potatoes, vegetables"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-71.1, 46.85],
+          [-70.8, 46.85],
+          [-70.8, 46.95],
+          [-71.1, 46.95],
+          [-71.1, 46.85]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Laval Agricultural Zone",
+        "type": "agricultural_region",
+        "description": "Urban-adjacent farmland in Laval",
+        "area_ha": 8500,
+        "primary_crops": "Greenhouse vegetables, market gardens"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.85, 45.55],
+          [-73.65, 45.55],
+          [-73.65, 45.65],
+          [-73.85, 45.65],
+          [-73.85, 45.55]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lanaudière Agricultural Zone",
+        "type": "agricultural_region",
+        "description": "Northern agricultural region",
+        "area_ha": 280000,
+        "primary_crops": "Tobacco, corn, vegetables, dairy"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.6, 45.8],
+          [-73.2, 45.8],
+          [-73.2, 46.2],
+          [-73.6, 46.2],
+          [-73.6, 45.8]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Centre-du-Québec Agricultural Zone",
+        "type": "agricultural_region",
+        "description": "Central Quebec dairy and crop region",
+        "area_ha": 350000,
+        "primary_crops": "Dairy, hay, corn, maple syrup"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-72.5, 45.8],
+          [-71.8, 45.8],
+          [-71.8, 46.3],
+          [-72.5, 46.3],
+          [-72.5, 45.8]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ferme Cadet Roussel",
+        "type": "organic_farm",
+        "description": "Organic vegetable farm, CSA pioneer",
+        "website": "https://www.fermecadetroussel.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.3412, 45.3156] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Les Jardins de la Grelinette",
+        "type": "market_garden",
+        "description": "Intensive market garden, author of The Market Gardener",
+        "website": "https://lagrelinette.com/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-72.9234, 45.6123] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ferme des Quatre-Temps",
+        "type": "organic_farm",
+        "description": "Large organic farm in Hemmingford",
+        "website": "https://fermequatretemps.ca/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-73.7156, 45.0678] }
+    }
+  ]
+}

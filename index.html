@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartAgri</title>
+
+    <!-- Main site stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- HERO / HOME -->
+    <section class="header" id="home">
+        <nav>
+            <div class="logo-title">
+                <a href="#home">
+                    <!-- navbar logo -->
+                    <img src="images/Bannerlogo2-removebg-preview.png" alt="SmartAgri Logo" class="logo" />
+                </a>
+                <h1 class="site-title">SmartAgri</h1>
+            </div>
+
+            <div class="nav-links">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#how-to-use">How To Use</a></li>
+                    <li><a href="#mission">Our Mission</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="text-box">
+            <h1>A Smarter Way to Navigate Modern Farming</h1>
+            <p>Empowering farmers, planners, and communities with clearer spatial insights.</p>
+            <a href="map.html" class="hero-btn">Discover Our Interactive Map</a>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- ABOUT -->
+        <section class="content-section split" id="about">
+            <div class="split-text">
+                <h2>About SmartAgri</h2>
+                <p>
+                    SmartAgri is a prototype decision-support tool for Quebec’s regional food systems. It brings
+                    together farmland and greenhouse areas, farmers’ markets and CSAs, and community food access sites
+                    on a single interactive map.
+                </p>
+                <p>
+                    By combining these layers, SmartAgri helps users quickly see where production is concentrated,
+                    where farmers and markets already connect, and which neighbourhoods may face barriers to fresh
+                    food access.
+                </p>
+            </div>
+            <div class="split-image">
+                <img src="images/New-Agriculture-Technology-Image.png" alt="Farmer using digital tools in the field" />
+            </div>
+        </section>
+
+        <!-- HOW TO USE -->
+        <section class="content-section split reverse" id="how-to-use">
+            <div class="split-text">
+                <h2>How To Use the Interactive Map</h2>
+                <ol class="how-list">
+                    <li><strong>Explore the region.</strong> Pan and zoom across Montréal, Laval, and the South Shore to orient yourself.</li>
+                    <li><strong>Toggle layers.</strong> Use the layer panel to switch farmland &amp; greenhouses, markets &amp; CSAs, and community food access sites on or off.</li>
+                    <li><strong>Click features.</strong> Pop-ups display key details such as name, type, hours, or notes about each site.</li>
+                    <li><strong>Compare patterns.</strong> Overlay multiple layers to identify gaps between production, distribution, and communities.</li>
+                </ol>
+                <p class="cta-text">
+                    When you are ready, open the full-screen map below and start exploring scenarios for a more resilient food system.
+                </p>
+                <a href="map.html" class="hero-btn secondary-btn">Open the Map</a>
+            </div>
+            <div class="split-image">
+                <img src="images/AdobeStock_243525780-1.png" alt="Tractor working in a well-structured field" />
+            </div>
+        </section>
+
+        <!-- WHY IT MATTERS / VISUAL STORY -->
+        <section class="content-section">
+            <h2>Why SmartAgri Matters</h2>
+            <p>
+                Farming in Quebec is shaped by climate risks, land pressures, and uneven access to fresh food.
+                SmartAgri highlights both the strengths and vulnerabilities in this system.
+            </p>
+
+            <div class="mission-grid">
+                <article class="mission-card">
+                    <img src="images/veggies.png" alt="Fresh vegetables" />
+                    <h3>Healthy, Local Food</h3>
+                    <p>
+                        Mapping markets, CSAs, and food access points helps identify where local produce already reaches
+                        households &mdash; and where new connections could be built.
+                    </p>
+                </article>
+
+                <article class="mission-card">
+                    <img src="images/Smith_Climate_Ag_4.12.png" alt="Drought-stressed field" />
+                    <h3>Climate Challenges</h3>
+                    <p>
+                        Visualizing farmland against climate stress and land-use change can support adaptation
+                        strategies and more resilient land management.
+                    </p>
+                </article>
+
+                <article class="mission-card">
+                    <img src="images/farmer1-1.png" alt="Farmer facing crop loss" />
+                    <h3>Supporting Farmers</h3>
+                    <p>
+                        Farmers face economic uncertainty and time pressure. A clear map reduces guesswork and supports
+                        collaboration with buyers, planners, and community groups.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <!-- MISSION -->
+        <section class="content-section" id="mission">
+            <h2>Our Mission</h2>
+            <p>
+                SmartAgri’s mission is to make complex spatial information understandable for the people who rely on it:
+                farmers, local governments, advocacy groups, and residents.
+            </p>
+            <ul class="mission-list">
+                <li>Bridge the gap between raw GIS datasets and everyday decision-making.</li>
+                <li>Highlight opportunities to shorten supply chains and reduce travel distances for fresh food.</li>
+                <li>Identify neighbourhoods where additional infrastructure or policy support could improve food security.</li>
+            </ul>
+            <p>
+                This version of SmartAgri was developed as a web mapping prototype for a university course. Future
+                iterations could incorporate live data feeds, farmer feedback, and climate projections to refine the
+                indicators and interface.
+            </p>
+        </section>
+    </main>
+</body>
+</html>

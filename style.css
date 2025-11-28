@@ -1,0 +1,551 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  font-family: "Playfair Display", serif;
+}
+  
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Playfair Display", serif;
+}
+.header{
+    min-height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7), rgba(4,9,30,0.7)), url(images/banner.png);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+
+}
+.logo {
+  width: 60px;       /* smaller than before */
+  height: auto;
+  margin: 10px 0;
+  cursor: pointer;
+  background: none;  /* ensure no CSS background */
+  border: none;
+}
+nav{
+  display: flex;
+  padding: 2% 6%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav img{
+    width: 150px;
+}
+.nav-links{
+    flex: 1;
+    text-align: right;  
+}
+.nav-links ul li a {
+  font-size: 18px;      
+  color: white;         
+  font-weight: 500;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.nav-links ul li a:hover {
+  color: #00ffcc; 
+}      
+.nav-links ul li {
+  list-style: none;
+  display: inline-block;
+  padding: 8px 12px;
+  position: relative;
+}
+.nav-links ul li a::after {
+  content: '';
+  width: 0%;
+  height: 2px;
+  background-color: #f44336;
+  display: block;
+  margin: auto;
+  transition: 0.5s;
+}
+
+.nav-links ul li a:hover::after {
+  width: 100%;
+}
+.text-box{
+  width: 90%;
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+}
+.text-box h1{
+  font-size: 62px;
+}
+.text-box p{
+  margin: 10px 0 40px;
+  font-size: 14px;
+  color: #fff;
+}
+.hero-btn{
+  display: inline-block;
+  text-decoration: none;
+  color:#fff;
+  border: 1px solid #fff;
+  padding: 12px 34px;
+  font-size: 13px;
+  background: transparent;
+  position:relative;
+  cursor: pointer;
+}
+.hero-btn:hover{
+  border: 1px solid light #f44336;
+  background: #f44336;
+  transition: 1s;
+}
+@media (max-width: 700px) {
+  .text-box h1 {
+    font-size: 20px;
+  }
+  .nav-links ul li {
+    display: block;
+  }
+} 
+
+
+.nav-links {
+  position: fixed;
+  background: #f44336;
+  height: 100vh;
+  width: 220px;
+  top: 0;
+  right: -220px;           
+  text-align: left;
+  z-index: 9999;
+  transition: right 0.4s ease;
+}
+
+
+.nav-links.open {
+  right: 0;
+}
+
+.nav-links ul {
+  list-style: none;
+  padding: 30px;
+  margin: 0;
+}
+
+.nav-links ul li {
+  display: block;
+  margin: 22px 0;
+}
+
+@media (min-width: 801px) {
+  .nav-links {
+    position: static;
+    background: transparent;
+    height: auto;
+    width: auto;
+    right: auto;
+    z-index: auto;
+    transition: none;
+  }
+  .nav-links ul {
+    padding: 0;
+  }
+  .nav-links ul li {
+    display: inline-block;
+    margin: 0 20px;
+  }
+}
+
+
+
+
+/* Group logo and title together */
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between logo and text */
+}
+.nav-links ul li a {
+    color : #fff;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+/* Style the title text */
+.site-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 1px;
+  cursor: default;
+  transition: 0.3s;
+}
+
+.site-title:hover {
+  color: #00ffcc; /* sleek glow effect on hover */
+}
+
+/* =========================
+   MAIN CONTENT SECTIONS
+   ========================= */
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 5%;
+}
+
+.content-section {
+  padding: 60px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.content-section:last-child {
+  border-bottom: none;
+}
+
+.content-section h2 {
+  font-size: 36px;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.content-section p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   SPLIT LAYOUT (text + image)
+   ========================= */
+
+.split {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
+
+.split.reverse {
+  flex-direction: row-reverse;
+}
+
+.split-text {
+  flex: 1;
+}
+
+.split-image {
+  flex: 1;
+}
+
+.split-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* =========================
+   HOW TO USE LIST
+   ========================= */
+
+.how-list {
+  margin: 25px 0;
+  padding-left: 20px;
+}
+
+.how-list li {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+.how-list li strong {
+  color: #1a1a1a;
+}
+
+.cta-text {
+  margin-top: 25px;
+  font-style: italic;
+  color: #666;
+}
+
+.secondary-btn {
+  background: #15803d;
+  border-color: #15803d;
+  color: #fff;
+  margin-top: 15px;
+}
+
+.secondary-btn:hover {
+  background: #166534;
+  border-color: #166534;
+}
+
+/* =========================
+   MISSION GRID (3 cards)
+   ========================= */
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.mission-card {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mission-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.mission-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.mission-card h3 {
+  font-size: 20px;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+}
+
+.mission-card p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #555;
+}
+
+/* =========================
+   MISSION LIST
+   ========================= */
+
+.mission-list {
+  margin: 25px 0;
+  padding-left: 25px;
+}
+
+.mission-list li {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+/* =========================
+   RESPONSIVE - TABLETS
+   ========================= */
+
+@media (max-width: 900px) {
+  .split {
+    flex-direction: column;
+  }
+
+  .split.reverse {
+    flex-direction: column;
+  }
+
+  .mission-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* =========================
+   RESPONSIVE - MOBILE
+   ========================= */
+
+@media (max-width: 600px) {
+  .main-content {
+    padding: 40px 5%;
+  }
+
+  .content-section {
+    padding: 40px 0;
+  }
+
+  .content-section h2 {
+    font-size: 28px;
+  }
+
+  .mission-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .split-image img {
+    border-radius: 6px;
+  }
+}
+
+/* =========================
+   MAP PAGE STYLES
+   ========================= */
+
+.map-page {
+  margin: 0;
+  padding: 0;
+}
+
+/* Info boxes (top-right and bottom-left) */
+.map-info-box {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 280px;
+  color: #333;
+}
+
+.map-info-box strong {
+  font-size: 14px;
+  color: #1a1a1a;
+}
+
+/* Legend box */
+.legend {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.legend-title {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 6px;
+}
+
+.legend i {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border-radius: 3px;
+}
+
+.legend div {
+  margin: 4px 0;
+}
+
+/* Home and Farmland buttons */
+.leaflet-control-home {
+  background: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  margin-bottom: 6px;
+  transition: background 0.2s, color 0.2s;
+  text-align: center;
+}
+
+.leaflet-control-home:hover {
+  background: #15803d;
+  color: white;
+}
+
+/* Layer control styling */
+.leaflet-control-layers {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15) !important;
+}
+
+.leaflet-control-layers-expanded {
+  padding: 10px 14px !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 12px !important;
+}
+
+/* Popup styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+}
+
+.leaflet-popup-content {
+  margin: 12px 14px;
+  line-height: 1.6;
+}
+
+.leaflet-popup-content strong {
+  font-size: 14px;
+  color: #1a1a1a;
+}
+
+.leaflet-popup-content a {
+  color: #15803d;
+  text-decoration: none;
+}
+
+.leaflet-popup-content a:hover {
+  text-decoration: underline;
+}
+
+/* Interactive legend items */
+.legend-item {
+  padding: 6px 8px;
+  margin: 2px -8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.legend-item:hover {
+  background: #e5e5e5;
+}
+
+.legend-item.active {
+  background: #d1fae5;
+  font-weight: 500;
+}
+
+.legend-item span {
+  flex: 1;
+}
+
+.legend-hint {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #e5e5e5;
+  font-size: 11px;
+  color: #666;
+  font-style: italic;
+}

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SmartAgri Interactive Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Main CSS (fonts + map styles) -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+
+  <!-- Ensure map always visible -->
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body class="map-page">
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+  <script>
+    /***********************
+     * MAP INITIALIZATION  *
+     ***********************/
+
+    const homeCenter = [45.8, -73.2]; // Quebec region (wider view)
+    const homeZoom = 8;
+
+    const map = L.map("map", {
+      zoomControl: true
+    }).setView(homeCenter, homeZoom);
+
+    // Two basemaps: standard OSM + light Carto
+    const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "© OpenStreetMap contributors"
+    }).addTo(map);
+
+    const carto = L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+      {
+        maxZoom: 19,
+        attribution: "© OpenStreetMap, © Carto"
+      }
+    );
+
+    /***********************
+     * INFO CONTROL        *
+     ***********************/
+
+    const infoControl = L.control({ position: "bottomleft" });
+    infoControl.onAdd = function () {
+      this._div = L.DomUtil.create("div", "map-info-box");
+      this.update();
+      return this._div;
+    };
+    infoControl.update = function (props) {
+      if (!props) {
+        this._div.innerHTML = "<strong>Feature Info</strong><br>Click or hover over a feature to see details.";
+      } else {
+        let html = "<strong>" + (props.name || "Feature") + "</strong><br>";
+        if (props.type) html += "<b>Type:</b> " + props.type + "<br>";
+        if (props.suitability) {
+          const suitLabel = props.suitability === 'H' ? 'High' : props.suitability === 'M' ? 'Medium' : 'Low';
+          html += "<b>Suitability:</b> " + suitLabel + "<br>";
+        }
+        if (props.season) html += "<b>Season:</b> " + props.season + "<br>";
+        if (props.hours) html += "<b>Hours:</b> " + props.hours + "<br>";
+        if (props.address) html += "<b>Address:</b> " + props.address + "<br>";
+        if (props.area_ha) html += "<b>Area:</b> " + props.area_ha + " ha<br>";
+        if (props.note) html += "<i>" + props.note + "</i>";
+        this._div.innerHTML = html;
+      }
+    };
+    infoControl.addTo(map);
+
+    // Track selected feature
+    let selectedLayer = null;
+
+    function selectFeature(layer, originalStyle, highlightStyle) {
+      // Reset previous selection
+      if (selectedLayer && selectedLayer.resetStyle) {
+        selectedLayer.layer.setStyle(selectedLayer.originalStyle);
+      }
+      // Apply highlight
+      layer.setStyle(highlightStyle);
+      selectedLayer = { layer: layer, originalStyle: originalStyle };
+      infoControl.update(layer.feature.properties);
+    }
+
+    /***********************
+     * LAYER DEFINITIONS   *
+     ***********************/
+
+    // Store layers for legend interaction
+    const layerGroups = {};
+
+    // Markets & CSA Layer
+    const marketsLayer = L.layerGroup();
+    layerGroups.markets = { layer: marketsLayer, bounds: null };
+
+    fetch("data/markets_csa.geojson")
+      .then(resp => resp.json())
+      .then(data => {
+        const geoLayer = L.geoJSON(data, {
+          pointToLayer: (feature, latlng) => {
+            const name = feature.properties.name || "";
+            const isCSA = name.toLowerCase().includes("csa");
+            return L.circleMarker(latlng, {
+              radius: 10,
+              color: isCSA ? "#2563eb" : "#b45309",
+              weight: 2,
+              fillColor: isCSA ? "#60a5fa" : "#fbbf24",
+              fillOpacity: 0.9
+            });
+          },
+          onEachFeature: (feature, layer) => {
+            const p = feature.properties || {};
+            let html = "<strong>" + (p.name || "Market / CSA") + "</strong>";
+            if (p.season) html += "<br><b>Season:</b> " + p.season;
+            if (p.hours) html += "<br><b>Hours:</b> " + p.hours;
+            if (p.website && p.website !== "") {
+              html += '<br><a href="' + p.website + '" target="_blank">Website</a>';
+            }
+            layer.bindPopup(html);
+
+            layer.on('click', function() {
+              infoControl.update(p);
+            });
+            layer.on('mouseover', function() {
+              layer.setStyle({ radius: 14, weight: 3 });
+            });
+            layer.on('mouseout', function() {
+              layer.setStyle({ radius: 10, weight: 2 });
+            });
+          }
+        });
+        marketsLayer.addLayer(geoLayer);
+        layerGroups.markets.bounds = geoLayer.getBounds();
+        console.log("Loaded markets_csa.geojson");
+      })
+      .catch(err => console.warn("Could not load markets_csa.geojson", err));
+
+    // Food Access Layer
+    const foodAccessLayer = L.layerGroup();
+    layerGroups.foodAccess = { layer: foodAccessLayer, bounds: null };
+
+    fetch("data/food_access.geojson")
+      .then(resp => resp.json())
+      .then(data => {
+        const geoLayer = L.geoJSON(data, {
+          pointToLayer: (feature, latlng) =>
+            L.circleMarker(latlng, {
+              radius: 10,
+              color: "#6b21a8",
+              weight: 2,
+              fillColor: "#a855f7",
+              fillOpacity: 0.9
+            }),
+          onEachFeature: (feature, layer) => {
+            const p = feature.properties || {};
+            let html = "<strong>" + (p.name || "Food Access Site") + "</strong>";
+            if (p.type) html += "<br><b>Type:</b> " + p.type;
+            if (p.address) html += "<br><b>Address:</b> " + p.address;
+            if (p.hours) html += "<br><b>Hours:</b> " + p.hours;
+            layer.bindPopup(html);
+
+            layer.on('click', function() {
+              infoControl.update(p);
+            });
+            layer.on('mouseover', function() {
+              layer.setStyle({ radius: 14, weight: 3 });
+            });
+            layer.on('mouseout', function() {
+              layer.setStyle({ radius: 10, weight: 2 });
+            });
+          }
+        });
+        foodAccessLayer.addLayer(geoLayer);
+        layerGroups.foodAccess.bounds = geoLayer.getBounds();
+        console.log("Loaded food_access.geojson");
+      })
+      .catch(err => console.warn("Could not load food_access.geojson", err));
+
+    // SLC Quebec Layer
+    const slcLayer = L.layerGroup();
+    layerGroups.slc = { layer: slcLayer, bounds: null };
+
+    fetch("data/slc_quebec.geojson")
+      .then(resp => resp.json())
+      .then(data => {
+        const geoLayer = L.geoJSON(data, {
+          style: function(feature) {
+            return {
+              color: "#0f766e",
+              weight: 2,
+              dashArray: "4 4",
+              fillColor: "#67e8f9",
+              fillOpacity: 0.35
+            };
+          },
+          pointToLayer: (feature, latlng) =>
+            L.circleMarker(latlng, {
+              radius: 8,
+              color: "#0f766e",
+              weight: 2,
+              fillColor: "#22c5dc",
+              fillOpacity: 0.9
+            }),
+          onEachFeature: (feature, layer) => {
+            const p = feature.properties || {};
+            let html = "<strong>" + (p.name || "SLC Québec") + "</strong>";
+            if (p.type) html += "<br><b>Type:</b> " + p.type;
+            if (p.suitability) {
+              const suitLabel = p.suitability === 'high' ? 'High' : p.suitability === 'low' ? 'Low' : 'Medium';
+              html += "<br><b>Suitability:</b> " + suitLabel;
+            }
+            layer.bindPopup(html);
+
+            layer.on('click', function() {
+              infoControl.update(p);
+            });
+            if (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon") {
+              layer.on('mouseover', function() {
+                layer.setStyle({ weight: 4, fillOpacity: 0.5 });
+              });
+              layer.on('mouseout', function() {
+                geoLayer.resetStyle(layer);
+              });
+            }
+          }
+        });
+        slcLayer.addLayer(geoLayer);
+        layerGroups.slc.bounds = geoLayer.getBounds();
+        console.log("Loaded slc_quebec.geojson");
+      })
+      .catch(err => console.warn("Could not load slc_quebec.geojson", err));
+
+    // Soil Suitability Layers (separate by level for filtering)
+    const soilHighLayer = L.layerGroup();
+    const soilMediumLayer = L.layerGroup();
+    const soilLowLayer = L.layerGroup();
+    layerGroups.soilHigh = { layer: soilHighLayer, bounds: null };
+    layerGroups.soilMedium = { layer: soilMediumLayer, bounds: null };
+    layerGroups.soilLow = { layer: soilLowLayer, bounds: null };
+
+    fetch("data/soil_suitability_quebec.geojson")
+      .then(resp => resp.json())
+      .then(data => {
+        // Split features by suitability
+        const highFeatures = { type: "FeatureCollection", features: data.features.filter(f => f.properties.suitability === 'H') };
+        const medFeatures = { type: "FeatureCollection", features: data.features.filter(f => f.properties.suitability === 'M') };
+        const lowFeatures = { type: "FeatureCollection", features: data.features.filter(f => f.properties.suitability === 'L') };
+
+        function createSoilGeoLayer(geojsonData, fillColor, strokeColor, suitLabel) {
+          return L.geoJSON(geojsonData, {
+            style: function() {
+              return { color: strokeColor, weight: 1, fillColor: fillColor, fillOpacity: 0.5 };
+            },
+            onEachFeature: (feature, layer) => {
+              const p = feature.properties || {};
+              let popupHtml = "<strong>" + (p.name || "Soil Zone") + "</strong>";
+              popupHtml += "<br><b>Suitability:</b> " + suitLabel;
+              if (p.description) popupHtml += "<br><i>" + p.description + "</i>";
+              layer.bindPopup(popupHtml);
+
+              layer.on('click', function() {
+                infoControl.update({ name: p.name || "Soil Zone", suitability: p.suitability, type: p.description });
+              });
+              layer.on('mouseover', function() {
+                layer.setStyle({ weight: 3, fillOpacity: 0.7 });
+                infoControl.update({ name: p.name || "Soil Zone", suitability: p.suitability, type: p.description });
+              });
+              layer.on('mouseout', function() {
+                layer.setStyle({ weight: 1, fillOpacity: 0.5 });
+              });
+            }
+          });
+        }
+
+        const highGeo = createSoilGeoLayer(highFeatures, '#22c55e', '#15803d', 'High');
+        const medGeo = createSoilGeoLayer(medFeatures, '#facc15', '#a16207', 'Medium');
+        const lowGeo = createSoilGeoLayer(lowFeatures, '#ef4444', '#b91c1c', 'Low');
+
+        soilHighLayer.addLayer(highGeo);
+        soilMediumLayer.addLayer(medGeo);
+        soilLowLayer.addLayer(lowGeo);
+
+        if (highFeatures.features.length) layerGroups.soilHigh.bounds = highGeo.getBounds();
+        if (medFeatures.features.length) layerGroups.soilMedium.bounds = medGeo.getBounds();
+        if (lowFeatures.features.length) layerGroups.soilLow.bounds = lowGeo.getBounds();
+
+        console.log("Loaded soil_suitability_quebec.geojson - H:" + highFeatures.features.length + " M:" + medFeatures.features.length + " L:" + lowFeatures.features.length);
+      })
+      .catch(err => console.warn("Could not load soil_suitability_quebec.geojson", err));
+
+    /***********************
+     * LAYER CONTROL       *
+     ***********************/
+
+    const baseLayers = {
+      "OpenStreetMap": osm,
+      "Light basemap": carto
+    };
+
+    const overlays = {
+      "Markets & CSA": marketsLayer,
+      "Food Access Sites": foodAccessLayer,
+      "SLC Québec Area": slcLayer,
+      "Soil: High": soilHighLayer,
+      "Soil: Medium": soilMediumLayer,
+      "Soil: Low": soilLowLayer
+    };
+
+    L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
+
+    // Add main layers by default (soil layers hidden until toggled)
+    marketsLayer.addTo(map);
+    foodAccessLayer.addTo(map);
+    slcLayer.addTo(map);
+    // Soil layers NOT added by default - toggle individually via legend or checkbox
+
+    /***********************
+     * INTERACTIVE LEGEND  *
+     ***********************/
+
+    const legend = L.control({ position: "bottomright" });
+    legend.onAdd = function () {
+      const div = L.DomUtil.create("div", "legend");
+      div.innerHTML = `
+        <div class="legend-title">SmartAgri Layers</div>
+        <div class="legend-item" data-layer="markets">
+          <i style="background:#fbbf24;border:2px solid #b45309;"></i>
+          <span>Markets</span>
+        </div>
+        <div class="legend-item" data-layer="csa">
+          <i style="background:#60a5fa;border:2px solid #2563eb;"></i>
+          <span>CSA drop-offs</span>
+        </div>
+        <div class="legend-item" data-layer="foodAccess">
+          <i style="background:#a855f7;border:2px solid #6b21a8;"></i>
+          <span>Food access sites</span>
+        </div>
+        <div class="legend-item" data-layer="slc">
+          <i style="background:#67e8f9;border:2px solid #0f766e;"></i>
+          <span>SLC Québec area</span>
+        </div>
+        <div class="legend-title" style="margin-top:10px;">Soil Suitability</div>
+        <div class="legend-item" data-layer="soilHigh">
+          <i style="background:#22c55e;border:2px solid #15803d;"></i>
+          <span>High</span>
+        </div>
+        <div class="legend-item" data-layer="soilMedium">
+          <i style="background:#facc15;border:2px solid #a16207;"></i>
+          <span>Medium</span>
+        </div>
+        <div class="legend-item" data-layer="soilLow">
+          <i style="background:#ef4444;border:2px solid #b91c1c;"></i>
+          <span>Low</span>
+        </div>
+        <div class="legend-hint">Click soil to toggle on/off</div>
+      `;
+
+      // Make legend items clickable
+      L.DomEvent.disableClickPropagation(div);
+
+      return div;
+    };
+    legend.addTo(map);
+
+    // Add click handlers to legend items after a short delay (to ensure DOM is ready)
+    setTimeout(() => {
+      document.querySelectorAll('.legend-item').forEach(item => {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', function() {
+          const layerType = this.getAttribute('data-layer');
+          const isActive = this.classList.contains('active');
+
+          // Toggle behavior for soil layers, zoom for others
+          switch(layerType) {
+            case 'markets':
+            case 'csa':
+              if (layerGroups.markets.bounds && layerGroups.markets.bounds.isValid()) {
+                map.fitBounds(layerGroups.markets.bounds.pad(0.2));
+                if (!map.hasLayer(marketsLayer)) map.addLayer(marketsLayer);
+              }
+              break;
+            case 'foodAccess':
+              if (layerGroups.foodAccess.bounds && layerGroups.foodAccess.bounds.isValid()) {
+                map.fitBounds(layerGroups.foodAccess.bounds.pad(0.2));
+                if (!map.hasLayer(foodAccessLayer)) map.addLayer(foodAccessLayer);
+              }
+              break;
+            case 'slc':
+              if (layerGroups.slc.bounds && layerGroups.slc.bounds.isValid()) {
+                map.fitBounds(layerGroups.slc.bounds.pad(0.2));
+                if (!map.hasLayer(slcLayer)) map.addLayer(slcLayer);
+              }
+              break;
+            case 'soilHigh':
+              if (isActive) {
+                map.removeLayer(soilHighLayer);
+                this.classList.remove('active');
+              } else {
+                map.addLayer(soilHighLayer);
+                this.classList.add('active');
+                if (layerGroups.soilHigh.bounds && layerGroups.soilHigh.bounds.isValid()) {
+                  map.fitBounds(layerGroups.soilHigh.bounds.pad(0.1));
+                }
+              }
+              return; // Don't run the default active toggle below
+            case 'soilMedium':
+              if (isActive) {
+                map.removeLayer(soilMediumLayer);
+                this.classList.remove('active');
+              } else {
+                map.addLayer(soilMediumLayer);
+                this.classList.add('active');
+                if (layerGroups.soilMedium.bounds && layerGroups.soilMedium.bounds.isValid()) {
+                  map.fitBounds(layerGroups.soilMedium.bounds.pad(0.1));
+                }
+              }
+              return;
+            case 'soilLow':
+              if (isActive) {
+                map.removeLayer(soilLowLayer);
+                this.classList.remove('active');
+              } else {
+                map.addLayer(soilLowLayer);
+                this.classList.add('active');
+                if (layerGroups.soilLow.bounds && layerGroups.soilLow.bounds.isValid()) {
+                  map.fitBounds(layerGroups.soilLow.bounds.pad(0.1));
+                }
+              }
+              return;
+          }
+
+          // For non-soil layers, just highlight (don't toggle)
+          document.querySelectorAll('.legend-item:not([data-layer^="soil"])').forEach(el => el.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    }, 1000);
+
+    /***********************
+     * OTHER CONTROLS      *
+     ***********************/
+
+    // Top right info
+    const topInfo = L.control({ position: "topright" });
+    topInfo.onAdd = function () {
+      const div = L.DomUtil.create("div", "map-info-box");
+      div.innerHTML =
+        "<strong>SmartAgri Map</strong><br>" +
+        "Toggle layers using checkboxes above.<br>" +
+        "Click legend items to zoom to layers.<br>" +
+        "Click features for details.";
+      return div;
+    };
+    topInfo.addTo(map);
+
+    // Home button
+    const HomeControl = L.Control.extend({
+      options: { position: "topleft" },
+      onAdd: function () {
+        const container = L.DomUtil.create("div", "");
+        const homeBtn = L.DomUtil.create("div", "leaflet-control-home", container);
+        homeBtn.innerHTML = "🏠 Home";
+        homeBtn.title = "Reset map view";
+        L.DomEvent.on(homeBtn, "click", function (e) {
+          L.DomEvent.stopPropagation(e);
+          map.setView(homeCenter, homeZoom);
+        });
+        return container;
+      }
+    });
+    map.addControl(new HomeControl());
+
+    // Scale bar
+    L.control.scale({ metric: true, imperial: false }).addTo(map);
+
+    // Draw tools
+    const drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
+
+    const drawControl = new L.Control.Draw({
+      edit: { featureGroup: drawnItems },
+      draw: { circle: false, circlemarker: false }
+    });
+    map.addControl(drawControl);
+
+    map.on("draw:created", function (e) {
+      drawnItems.addLayer(e.layer);
+    });
+  </script>
+</body>
+</html>
